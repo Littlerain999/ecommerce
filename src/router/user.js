@@ -1,4 +1,5 @@
 const express=require("express")
+const User = require("../model/User.model")
 
 
 
@@ -8,6 +9,8 @@ const router=express().router
 
 
 router.get("/login",(req,res)=>{
+    
+
 res.send("Login accepted")
 })
 
