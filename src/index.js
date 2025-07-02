@@ -3,7 +3,7 @@ const userROuter=require("./router/user")
 const connectDB = require("./config/database")
 
 const app=express()
-
+app.use(express.json())
 const port =5000
 
 app.get("/",(req,res)=>{
