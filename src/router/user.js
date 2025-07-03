@@ -1,6 +1,6 @@
 const express=require("express")
 const User = require("../model/User.model")
-const { signup } = require("../controller/auth.controller")
+const { signup, login } = require("../controller/auth.controller")
 
 
 
@@ -9,11 +9,7 @@ const { signup } = require("../controller/auth.controller")
 const router=express.Router()
 
 
-router.get("/login",(req,res)=>{
-    
-
-res.send("Login accepted")
-})
+router.post("/login",login)
 
 
 router.post("/signup",signup)
