@@ -1,6 +1,8 @@
 const Joi = require("joi");
 const User = require("../model/User.model");
 const bcrypt = require("bcrypt");
+
+const jwt = require("jsonwebtoken");
 const userValidationSchema = Joi.object({
   username: Joi.string().min(3).required().messages({
     "string.empty": "Username is required",
@@ -35,8 +37,6 @@ const signup = async (req, res, next) => {
     //validate,
     const { error, value } = userValidationSchema.validate(data);
 
-    
-
     const { password, ...rest } = value;
 
     const hasedPassword = await bcrypt.hash(password, 10);
@@ -54,30 +54,34 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    
-    const {error,value}= loginValidationSchema.validate(req.body)
-   const {username,password}=value
-  // get from database
-    const user = await User.findOne({ username });
+    const { error, value } = loginValidationSchema.validate(req.body);
 
-// compare password
-    const isPasswordMatched=await bcrypt.compare(password,user.password)
-    
-    
-  if(isPasswordMatched){
-    // if login sucess -create token using jwt
-    // npm i jsonwebtoken
+    if (!error) {
+      const { username, password } = value;
+      // get from database
+      const user = await User.findOne({ username });
 
-  }
-  
+      // compare password
+      if (user) {
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (isPasswordMatched) {
+          // if login sucess -create token using jwt\\
+          let userObject = user.toObject();
+          delete userObject.password;
+          console.log(userObject);
 
-
-
-
-
-
-
-
+          const token = jwt.sign(userObject, "shhhhh");
+          res.status(200).send({
+            token,
+            message: "User Login Success",
+          });
+        } else {
+          res.status(401).send({ message: "Wrong credentials" });
+        }
+      } else {
+        res.status(401).send({ message: "Wrong credentials" });
+      }
+    }
 
     // send the token
   } catch (err) {
