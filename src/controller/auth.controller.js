@@ -19,6 +19,7 @@ const userValidationSchema = Joi.object({
     "string.min": "Password must be at least 6 characters long",
     "any.required": "Password is required",
   }),
+  role:Joi.string()
 });
 
 const loginValidationSchema = Joi.object({
@@ -68,7 +69,7 @@ const login = async (req, res, next) => {
           // if login sucess -create token using jwt\\
           let userObject = user.toObject();
           delete userObject.password;
-          console.log(userObject);
+      
 
           const token = jwt.sign(userObject, "shhhhh");
           res.status(200).send({

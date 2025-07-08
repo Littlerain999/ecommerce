@@ -12,14 +12,13 @@ const router=express.Router()
 router.post("/login",login)
 
 
-router.post("/signup",(req,res,next)=>{
-next()
-},
-
+router.post("/signup",
 
 signup
 
 )
+
+
 
 
 module.exports=router

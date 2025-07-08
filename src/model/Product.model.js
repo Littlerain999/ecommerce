@@ -1,29 +1,30 @@
-// models/User.js
-
 const { required } = require("joi");
 const mongoose = require("mongoose");
+const { Schema, Types } = mongoose;
 
-const productShema = new mongoose.Schema(
+const productSchema = new Schema(
   {
-    name:{
-        type:String,
-        required:true
+    name: {
+      type: String,
+      required: true,
     },
-    brand:{
-        type:String
+    brand: {
+      type: String,
     },
-    price:{
-        type:Number,
-        required:ture
-    }
-
-
+    price: {
+      type: Number,
+      required: true,
+    },
+    createdBy: {
+      type: Types.ObjectId,
+      ref: "User",
+      required:true
+    },
   },
   {
     timestamps: true,
   }
 );
 
-// Create and export the model
-const Product = mongoose.model("Product", productShema);
+const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
