@@ -1,42 +1,40 @@
-// models/User.js
-
+const { required } = require("joi");
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
-  {
+const { Schema, model } = mongoose;
+
+const userSchema = new Schema({
     username: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
+        trim: true
     },
     email: {
-      type: String,
-      required: true,
-      validate: {
-        validator: async (value) => {
-          let matched = await mongoose.models.User.findOne({ email: value });
-          if (matched) {
-            return false;
-          }
-        },
-        message: "email already used",
-      },
+        type: String,
+        required: true,
+        trim: true,
+        validate: {
+            validator: async (value) => {
+                const isMatched = await mongoose.models.User.findOne({ email: value });
+                if (isMatched) return false
+            },
+            message: "email already in use"
+        }
     },
-
     password: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
+        trim: true
     },
     role: {
-      type: String,
-      enum: ["admin", "user"],
-      default: "user",
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+        type: String,
+        enum: ["Admin", "User"],
+        default: "User"
+    }
+}, {
+    timestamps: true
+});
 
-// Create and export the model
-const User = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
+
 module.exports = User;

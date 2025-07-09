@@ -1,20 +1,9 @@
-const express=require("express")
-const userROuter=require("./router/user")
-const productRouter=require("./router/product.router")
-const connectDB = require("./config/database")
+const dotenv = require("dotenv");
+dotenv.config();
 
-const app=express()
-app.use(express.json())
-const port =5000
+const app = require("./app");
+const CONNECTTION = require("./config/database");
 
-app.get("/",(req,res)=>{
-res.send("server running")
-})
+console.clear();
+CONNECTTION(app);
 
-connectDB()
-app.use(userROuter)
-app.use(productRouter)
-app.listen(port,()=>{
-
-console.log(`server listing at port ${port}`)
-})
