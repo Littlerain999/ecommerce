@@ -1,5 +1,6 @@
 const User = require("../model/user.model");
 const validation = require("./validations/user.signUp.validation");
+const Bcrypt = require("bcrypt");
 
 module.exports = async (req, res, next) => {
     try {
@@ -10,7 +11,6 @@ module.exports = async (req, res, next) => {
 
             console.log("Valid data");
 
-            const Bcrypt = require("bcrypt");
 
             const { password, ...others } = value;
 

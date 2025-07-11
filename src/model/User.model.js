@@ -7,7 +7,14 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        validate: {
+            validator: async (value) => {
+                const isMatched = await mongoose.models.User.findOne({ username: value });
+                if (isMatched) return false
+            },
+            message: "username already in use"
+        }
     },
     email: {
         type: String,
@@ -28,8 +35,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["Admin", "User"],
-        default: "User"
+        enum: ["admin", "user"],
+        default: "user"
     }
 }, {
     timestamps: true

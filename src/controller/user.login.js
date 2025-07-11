@@ -1,9 +1,7 @@
-const mongoose = require("mongoose");
 const Bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../model/user.model");
 const validation = require("./validations/user.login.validation");
-const { object } = require("joi");
 
 module.exports = async (req, res, next) => {
     try {
